@@ -18,7 +18,8 @@
                     </tr>
                     <?php endforeach; ?>
                 </table>
-                <a class="save" id="fileUpload"><span class="loader"></span><span class="text">Resize Image[s]</span></a>
+                <a class="button save" id="fileUpload"><span class="loader"></span><span class="text">Resize Image[s]</span></a>
+                <a class="button download">Download Last Batch</a>
                 <div class="clear"></div>
             </div>
         </div>

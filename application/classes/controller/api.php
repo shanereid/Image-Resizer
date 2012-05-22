@@ -40,6 +40,7 @@ class Controller_Api extends Controller {
 	public function action_doResize()
 	{
 	    ini_set('memory_limit', '512M');
+	    set_time_limit(0);
 	    
 	    $params = $_GET;
 	    
@@ -70,7 +71,9 @@ class Controller_Api extends Controller {
 	        $this->imageModel->createThumbnail('assets/images/uploads/original/'.$params['image'], 'assets/images/uploads/batches/'.$batchId.'/'.$preset['image_prefix'].'_'.$params['name'], $preset['image_w'], $preset['image_h']);
 	    }
 	    
-	    $this->sendResponse(array('batchId'=>$batchId));
+	    $this->imageModel->zip('assets/images/uploads/batches/'.$batchId.'/', 'assets/images/uploads/batches/'.$batchId.'.zip');
+	    
+	    $this->sendResponse(array('batchId'=>$batchId, 'zip'=>'assets/images/uploads/batches/'.$batchId.'.zip'));
 	}
 	
 	public function action_testEndpoint()

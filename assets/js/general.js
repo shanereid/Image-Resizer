@@ -30,7 +30,7 @@ $(document).ready(function() {
                 
                 $.getJSON('api/doResize', {'image': data.filename, 'name': data.orig_filename, 'sizes': sizes.join(',')}, function(response) {
                     if(response['status'] == 'success') {
-                        
+                        $('.formatBox .download').attr('href',response['zip']).fadeIn();
                     } else {
                         alert('Error: '+response['error']);
                     }

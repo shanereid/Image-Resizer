@@ -57,7 +57,7 @@
     border-right: 1px solid #AAA;
 }
 
-.formatBox .save {
+.formatBox .button {
     display: block;
     float: right;
     padding: 5px;
@@ -73,7 +73,11 @@
     position: relative;
 }
 
-.formatBox .save:hover {
+.formatBox .button.download {
+    display: none;
+}
+
+.formatBox .button:hover {
     background-color: #EFEFEF;
     color: #333;
 }
