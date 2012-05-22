@@ -1,2 +1,7 @@
 application/cache/*
 application/logs/*
+assets/images/uploads/*
+*.esproj
+.DS_Store
+
+user.shane.espressostorage
