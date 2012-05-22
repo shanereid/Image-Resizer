@@ -1,0 +1,94 @@
+/* Clear class to clear above floats */
+.clear {
+	clear: both !important;
+	float: none !important;
+	background: none !important;
+	padding: 0px !important;
+	margin: 0px !important;
+	height:0;
+	width:0;
+}
+
+/*
+ *
+ * CSS used in more than one place.
+ *
+ */
+ 
+* {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#darkOverlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    display: none;
+}
+
+.formatBox {
+    border: 1px solid #CCC;
+    width: 460px;
+}
+
+.formatBox h3 {
+    text-align: center;
+}
+
+.formatBox table {
+    width: 460px;
+    border-bottom: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+}
+
+.formatBox table td, table th {
+    padding: 5px;
+}
+
+.formatBox table tr.header th {
+    border-bottom: 1px solid #AAA;
+}
+
+.formatBox table .middle {
+    border-left: 1px solid #AAA;
+    border-right: 1px solid #AAA;
+}
+
+.formatBox .save {
+    display: block;
+    float: right;
+    padding: 5px;
+    
+    padding-left: 5px;
+    
+    margin: 5px;
+    border: 1px solid #DDD;
+    background-color: #F6F6F6;
+    color: #AAA;
+    
+    cursor: pointer;
+    position: relative;
+}
+
+.formatBox .save:hover {
+    background-color: #EFEFEF;
+    color: #333;
+}
+
+.formatBox .save .loader {
+    background-image: url(../images/ajax-loader.gif);
+    width: 16px;
+    height: 11px;
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    display: none;
+}
+
+.formatBox .save input {
+    width: 100%;
+    height: 100%;
+}
