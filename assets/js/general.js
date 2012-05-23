@@ -9,6 +9,13 @@ if(typeof console == 'undefined') {
 
 $(document).ready(function() {
     if(typeof qq != 'undefined') {
+        
+        var batchId = '' + (Math.random() * 10000000);
+        
+        $('.button.download').click(function() {
+            batchId = '' + (Math.random() * 10000000);
+        });
+        
         var submitCallback = function(id, fileName) {
             $('.formatBox .save').animate({'padding-left':'26px'}, function() {
                 $(this).prepend('<span class="loader"></span>');
@@ -28,7 +35,7 @@ $(document).ready(function() {
                 
                 $('.formatBox .save .text').text('Resizing...');
                 
-                $.getJSON('api/doResize', {'image': data.filename, 'name': data.orig_filename, 'sizes': sizes.join(',')}, function(response) {
+                $.getJSON('api/doResize', {'image': data.filename, 'name': data.orig_filename, 'sizes': sizes.join(','), 'batchId':batchId}, function(response) {
                     if(response['status'] == 'success') {
                         $('.formatBox .download').attr('href',response['zip']).fadeIn();
                     } else {
@@ -55,7 +62,7 @@ $(document).ready(function() {
             button: document.getElementById('fileUpload'),
             element: document.getElementById('fileUpload'),
             action: 'upload/do',
-            multiple: false,
+            multiple: true,
             allowedExtensions: ['jpg','jpeg','png','gif','bmp','pjpeg'],
             debug: true,
             onSubmit: submitCallback,

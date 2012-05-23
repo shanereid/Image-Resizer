@@ -56,6 +56,11 @@ class Controller_Api extends Controller {
 	        return;
 	    }
 	    
+	    if(!isset($params['batchId']))
+	        $batchId = md5($params['image'].'|'.microtime());
+	    else
+	        $batchId = $params['batchId'];
+	    
 	    if(!isset($params['sizes']))
 	        $sizes = false;
 	    else
@@ -63,9 +68,8 @@ class Controller_Api extends Controller {
 	    
 	    $presets = $this->dataModel->getPresets($sizes);
 	    
-	    $batchId = md5($params['image'].'|'.microtime());
-	    
-	    mkdir('assets/images/uploads/batches/'.$batchId.'/', 0777, true);
+	    if(!is_dir('assets/images/uploads/batches/'.$batchId.'/'))
+    	    mkdir('assets/images/uploads/batches/'.$batchId.'/', 0777, true);
 	    
 	    foreach ($presets as $preset) {
 	        $this->imageModel->createThumbnail('assets/images/uploads/original/'.$params['image'], 'assets/images/uploads/batches/'.$batchId.'/'.$preset['image_prefix'].'_'.$params['name'], $preset['image_w'], $preset['image_h']);
@@ -75,116 +79,4 @@ class Controller_Api extends Controller {
 	    
 	    $this->sendResponse(array('batchId'=>$batchId, 'zip'=>'assets/images/uploads/batches/'.$batchId.'.zip'));
 	}
-	
-	public function action_testEndpoint()
-	{
-	    // General convention is to send an error using $this->sendResponse(false, '[Error Description]') if the API fails to do what it should,
-	    // And send a success response using $this->sendResponse() if the API Succeeds.
-	    // If you need to send data back, use $this->sendResponse(array('data'=>'Whatever you need to send back'))
-	    
-	    $logicResult = false;
-	    
-	    if($logicResult)
-	        $this->sendResponse();
-	    else
-	        $this->sendResponse(false, 'Logic Result was false, so returning an error');
-	}
-	
-	public function action_successUploadComplete() {
-	    $params = $_GET;
-	    
-	    $this->imageModel = new Model_Image;
-	    
-	    if(!isset($params['image'])) {
-	        $this->sendResponse(false, 'Image is required for this API Call.');
-	        return;
-	    }
-	    
-	    $profileImage = $this->imageModel->createThumbnail('assets/images/uploads/original/'.$params['image'], 'assets/images/uploads/successImages/'.$params['image'], 190, 220);
-	    
-	    if(!$profileImage) {
-	        $this->sendResponse(false, 'Please upload an image with a minimum width & height of 480 x 463.');
-	    } else {
-	        $this->sendResponse(array('filename'=>$params['image']));
-	    }
-	}
-	
-	public function action_inspireUploadComplete() {
-	    $params = $_GET;
-	    
-	    $this->imageModel = new Model_Image;
-	    
-	    if(!isset($params['image'])) {
-	        $this->sendResponse(false, 'Image is required for this API Call.');
-	        return;
-	    }
-	    
-	    $moodboardImage = $this->imageModel->createThumbnail('assets/images/uploads/original/'.$params['image'], 'assets/images/uploads/inspireImages/'.$params['image'], 127, 180);
-	    
-	    $product = array(
-	        'image_url' => 'assets/images/uploads/inspireImages/'.$params['image'],
-	        'type' => 3
-	    );
-	    
-	    $product['id'] = $this->dataModel->insertProduct($product);
-	    
-	    if(!$moodboardImage) {
-	        $this->sendResponse(false, 'Please upload an image with a minimum width & height of 127 x 180.');
-	    } else {
-	        $this->sendResponse(array('product' => $product));
-	    }
-	}
-	
-	public function action_copyFacebookImageToInspire()
-	{
-	    $params = $_GET;
-	    
-	    $this->imageModel = new Model_Image;
-	    
-	    $url = $params['url'];
-	    $urlParts = explode('.',$url);
-	    $ext = $urlParts[count($urlParts) - 1];
-	    
-	    $filename = md5($url.'|'.microtime()).'.'.$ext;
-	    
-	    $img = 'assets/images/uploads/original/'.$filename;
-	    file_put_contents($img, file_get_contents($url));
-	    
-	    $moodboardImage = $this->imageModel->createThumbnail('assets/images/uploads/original/'.$filename, 'assets/images/uploads/inspireImages/'.$filename, 127, 180);
-	    
-	    $product = array(
-	        'image_url' => 'assets/images/uploads/inspireImages/'.$filename,
-	        'type' => 3
-	    );
-	    
-	    $product['id'] = $this->dataModel->insertProduct($product);
-	    
-	    if(!$moodboardImage) {
-	        $this->sendResponse(false, 'Please upload an image with a minimum width & height of 127 x 180.');
-	    } else {
-	        $this->sendResponse(array('product' => $product));
-	    }
-	}
-	
-	public function action_copyFacebookImage()
-	{
-	    $params = $_GET;
-	    
-	    $this->imageModel = new Model_Image;
-	    
-	    $url = $params['url'];
-	    $urlParts = explode('.',$url);
-	    $ext = $urlParts[count($urlParts) - 1];
-	    
-	    $filename = md5($url.'|'.microtime()).'.'.$ext;
-	    
-	    $img = 'assets/images/uploads/original/'.$filename;
-	    file_put_contents($img, file_get_contents($url));
-	    
-	    $image = $this->imageModel->createThumbnail('assets/images/uploads/original/'.$filename, 'assets/images/uploads/successImages/'.$filename, 190, 220);
-	    
-	    if($image) {
-		    $this->sendResponse(array('filename'=>$filename));
-	    }
-    }
 }

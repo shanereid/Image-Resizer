@@ -146,7 +146,7 @@ class Model_Image extends Model {
 	    }
 	
 	    $zip = new ZipArchive();
-	    if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
+	    if (!$zip->open($destination, ZIPARCHIVE::OVERWRITE)) {
 	        return false;
 	    }
 	
